@@ -121,9 +121,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         } else {
             //使用优惠券
             SmsCouponHistoryDetail couponHistoryDetail = getUseCoupon(cartPromotionItemList, orderParam.getCouponId());
-            if (couponHistoryDetail == null) {
-                return CommonResult.failed("该优惠券不可用");
-            }
+            if (couponHistoryDetail == null)
             //对下单商品的优惠券进行处理
             handleCouponAmount(orderItemList, couponHistoryDetail);
         }
@@ -155,6 +153,7 @@ public class OmsPortalOrderServiceImpl implements OmsPortalOrderService {
         OmsOrder order = new OmsOrder();
         order.setDiscountAmount(new BigDecimal(0));
         order.setTotalAmount(calcTotalAmount(orderItemList));
+        //运费，对接物流系统
         order.setFreightAmount(new BigDecimal(0));
         order.setPromotionAmount(calcPromotionAmount(orderItemList));
         order.setPromotionInfo(getOrderPromotionInfo(orderItemList));

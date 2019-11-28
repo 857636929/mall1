@@ -152,4 +152,11 @@ public class PmsProductController {
             return CommonResult.failed();
         }
     }
+    @ApiOperation("根据分类id获取所有商品信息")
+    @RequestMapping(value = "/listByCategoryId/{id}",method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<PmsProduct>> listByCategoryId(@PathVariable Long id){
+        List<PmsProduct> result = productService.listByCategoryId(id);
+        return CommonResult.success(result);
+    }
 }

@@ -125,4 +125,15 @@ public class PmsProductCategoryController {
         List<PmsProductCategoryWithChildrenItem> list = productCategoryService.listWithChildren();
         return CommonResult.success(list);
     }
+
+    @ApiOperation("查询所有分类信息")
+    @RequestMapping(value = "/categoryList",method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<PmsProductCategory>> categoryList(){
+        List<PmsProductCategory> categoryList = productCategoryService.categoryList();
+        return CommonResult.success(categoryList);
+    }
+
+
+
 }

@@ -8,13 +8,18 @@ import com.macro.mall.model.UmsMemberExample;
 import com.macro.mall.model.UmsMemberLevel;
 import com.macro.mall.model.UmsMemberLevelExample;
 import com.macro.mall.portal.domain.MemberDetails;
+import com.macro.mall.portal.dto.MemberLoginParam;
 import com.macro.mall.portal.service.RedisService;
 import com.macro.mall.portal.service.UmsMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -36,6 +41,8 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     private UmsMemberLevelMapper memberLevelMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserDetailsService userDetailsService;
     @Autowired
     private RedisService redisService;
     @Value("${redis.key.prefix.authCode}")
@@ -138,6 +145,16 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         record.setIntegration(integration);
         memberMapper.updateByPrimaryKeySelective(record);
     }
+
+//    @Override
+//    public void login(MemberLoginParam memberLoginParam) {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(memberLoginParam.getUsername());
+//        if (!passwordEncoder.matches(memberLoginParam.getPassword(),userDetails.getPassword())){
+//            throw new BadCredentialsException("密码不正确");
+//        }
+//        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+//    }
 
     //对输入的验证码进行校验
     private boolean verifyAuthCode(String authCode, String telephone){

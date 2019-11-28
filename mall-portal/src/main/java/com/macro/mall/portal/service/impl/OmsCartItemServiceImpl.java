@@ -106,7 +106,7 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
     @Override
     public int delete(Long memberId, List<Long> ids) {
         OmsCartItem record = new OmsCartItem();
-        record.setDeleteStatus(1);
+        record.setDeleteStatus(0);
         OmsCartItemExample example = new OmsCartItemExample();
         example.createCriteria().andIdIn(ids).andMemberIdEqualTo(memberId);
         return cartItemMapper.updateByExampleSelective(record, example);

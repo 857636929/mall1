@@ -24,6 +24,15 @@ public class OmsOrderController {
     @Autowired
     private OmsOrderService orderService;
 
+    //后台系统新增订单
+    @ApiOperation("新增订单")
+    @RequestMapping(value="/add",method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult add(){
+
+        return CommonResult.failed();
+    }
+
     @ApiOperation("查询订单")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody

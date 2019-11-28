@@ -348,4 +348,13 @@ public class PmsProductServiceImpl implements PmsProductService {
         }
     }
 
+    @Override
+    public List<PmsProduct> listByCategoryId(Long id) {
+        PmsProductExample pmsProductExample = new PmsProductExample();
+        pmsProductExample.createCriteria().andProductCategoryIdEqualTo(id);
+
+        return productMapper.selectByExample(pmsProductExample);
+
+    }
+
 }

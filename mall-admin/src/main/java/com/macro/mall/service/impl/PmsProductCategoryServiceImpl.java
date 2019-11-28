@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * PmsProductCategoryService实现类
@@ -132,6 +133,40 @@ public class PmsProductCategoryServiceImpl implements PmsProductCategoryService 
     @Override
     public List<PmsProductCategoryWithChildrenItem> listWithChildren() {
         return productCategoryDao.listWithChildren();
+    }
+
+    /**
+     * 查询出所有分类信息
+     * @return
+     */
+    @Override
+    public List<PmsProductCategory> categoryList(){
+        List<PmsProductCategory> categoryList = new ArrayList<>();
+        List<PmsProductCategory> pmsProductCategories = productCategoryMapper.selectByExample(new PmsProductCategoryExample());
+        for (PmsProductCategory ppc:pmsProductCategories) {
+            PmsProductCategory pmsProductCategory = new PmsProductCategory();
+            if (Objects.equals(0L,ppc.getParentId())){
+                List<PmsProductCategory> childrenCategories = childrenCategory(ppc.getId(), pmsProductCategories);
+                ppc.setChildren(childrenCategories);
+                categoryList.add(ppc);
+            }
+        }
+        return categoryList;
+    }
+    public List<PmsProductCategory> childrenCategory(Long prantId,List<PmsProductCategory> pmsProductCategories){
+        List<PmsProductCategory> result = new ArrayList<>();
+        for (PmsProductCategory ppc: pmsProductCategories) {
+            if (ppc.getParentId()==null||prantId==null){
+                continue;
+            }
+            //递归
+            if (prantId.equals(ppc.getParentId())){
+                result.add(ppc);
+                ppc.setChildren(childrenCategory(ppc.getId(),pmsProductCategories));
+            }
+
+        }
+        return result;
     }
 
     /**
